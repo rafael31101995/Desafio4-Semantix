@@ -43,7 +43,7 @@ def updating_csv(data, country):
         ground = country
     else:
         ground = 'world'
-    with open('corona_{}.csv'.format(ground), 'a', newline='') as csv_file:
+    with open('/home/semantix/Workspace/projeto_04/desafio4/corona_{}.csv'.format(ground), 'a', newline='') as csv_file:
         fieldnames = ['Coronavirus Cases', 'Deaths', 'Recovered', 'Data', 'Hour']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         header_or_not = False
@@ -51,7 +51,7 @@ def updating_csv(data, country):
             # Looking for a header inside the csv.
             sniffer = csv.Sniffer()
             sample_bytes = 32
-            header_or_not = (sniffer.has_header(open("corona_{}.csv".format(ground)).read(sample_bytes)))
+            header_or_not = (sniffer.has_header(open("/home/semantix/Workspace/projeto_04/desafio4/corona_{}.csv".format(ground)).read(sample_bytes)))
         except:
             print("Was Handled")
 
