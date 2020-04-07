@@ -13,28 +13,17 @@ def get_request(country_name):
 
     string_data_requested = request_data.text
     matches = match_corona_cases(string_data_requested)
-
     updating_csv(matches, country_name)
-
-    print(matches)
 
 
 def match_corona_cases(str_content):
-    pattern = re.compile(r'<span(\sstyle="color:#aaa")?>[0-9]+(.[0-9]+.[0-9]+)?')
-    second_pattern = re.compile(r'[0-9]+.[0-9]+(.[0-9]+.[0-9])?')
-
-    matches = pattern.finditer(str_content)
-    values = ''
-    for match in matches:
-        values = values + match.group(0)
-
-    second_match = second_pattern.finditer(values)
+    # This regular expression matches until the number reach 999.999.999.999
+    pattern = re.compile(r'<span(\sstyle="color:#aaa")?>([0-9]+.[0-9]+(.[0-9]+)?)')
     list_values = []
-    for match in second_match:
-        txt = match.group(0)
-        v = txt.replace(',', '.')
-        list_values.append(v)
-
+    matches = pattern.finditer(str_content)
+    for match in matches:
+        list_values.append(match.group(2).replace(',', '.'))
+    print(list_values)
     return list_values
 
 
@@ -54,7 +43,7 @@ def updating_csv(data, country):
         ground = country
     else:
         ground = 'world'
-    with open('/home/semantix/Workspace/projeto_04/desafio4/corona_{}.csv'.format(ground), 'a', newline='') as csv_file:
+    with open('corona_{}.csv'.format(ground), 'a', newline='') as csv_file:
         fieldnames = ['Coronavirus Cases', 'Deaths', 'Recovered', 'Data', 'Hour']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         header_or_not = False
